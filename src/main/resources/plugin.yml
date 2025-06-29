@@ -1,0 +1,22 @@
+name: QCTaxes
+version: '1.0-SNAPSHOT'
+main: org.queercraft.qctaxes.QCTaxes
+api-version: '1.21'
+prefix: QCTaxes
+load: POSTWORLD
+authors: [ colserra ]
+description: A simple plugin to implement a custom, bracket-based tax system.
+website: queercraft.net
+depend: [Vault]
+commands:
+  tax:
+    description: Main command
+    usage: /tax <parameter>
+    aliases: []
+permissions:
+  tax.reload:
+    description: Allows reloading of the config
+    default: op
+  tax.all:
+    description: Allows taxing all online players
+    default: op

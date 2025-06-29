@@ -1,0 +1,20 @@
+config:
+  enabled: false
+
+brackets:
+  # Define tax brackets by specifying the upper bound and the corresponding tax rate.
+  # Each bracket has it's tax rate applied exclusively, so with a bracket capped at 5000 with 0% tax
+  # and one at 10000 with 1.5% tax, the first 5000 will not yield any taxes while the next 5000 will be
+  # taxed at 1.5%.
+  exempt:
+    max: 5000.0
+    percent: 0
+  low:
+    max: 10000.0
+    percent: 1.5
+  medium:
+    max: 25000.0
+    percent: 5
+  high:
+    max: 100000.0
+    percent: 10
