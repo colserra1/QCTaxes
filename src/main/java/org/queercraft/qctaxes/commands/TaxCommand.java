@@ -39,6 +39,7 @@ public class TaxCommand extends SafeCommandExecutor{
                 break;
             case "reload":
                 handleReloadCommand(sender);
+                break;
             case "all":
                 handleTaxAllCommand(sender);
                 break;
@@ -58,9 +59,13 @@ public class TaxCommand extends SafeCommandExecutor{
     public void handleTaxAllCommand(CommandSender sender) {
         if (sender.hasPermission("tax.all")) {
             if (plugin.getConfig().getBoolean("config.enabled")) {
+                sender.sendMessage("Collecting Taxes from all online players...");
+                int taxedPlayers = 0;
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     taxPlayer(player);
+                    taxedPlayers++;
                 }
+                sender.sendMessage("Taxed " + taxedPlayers + " players.");
             }else sender.sendMessage("Plugin not enabled.");
         }else {
             sender.sendMessage("You do not have permission to use this command.");
@@ -76,11 +81,12 @@ public class TaxCommand extends SafeCommandExecutor{
         double subtractAmount = 0;
         double taxedBal = 0;
 
-        player.sendMessage("§aTax collection in progress, taxing a balance of §f"+playerBal+"M");
+        player.sendMessage("§aTax collection in progress, taxing a balance of §f"+String.format("%.2f", playerBal)+"M");
 
         for (Bracket bracket : brackets) {
             if (playerBal < bracket.getLimit()){
                 subtractAmount += (playerBal-taxedBal)*(bracket.getTaxRate()/100);
+                break;
             }else{
                 subtractAmount += (bracket.getLimit()-taxedBal)*(bracket.getTaxRate()/100);
                 taxedBal = bracket.getLimit();
@@ -108,6 +114,6 @@ public class TaxCommand extends SafeCommandExecutor{
             }
         }
 
-        player.sendMessage("§aTax collection finished, taxed §f"+subtractAmount+"M");
+        player.sendMessage("§aTax collection finished, taxed §f"+String.format("%.2f", subtractAmount)+"M");
     }
 }

@@ -8,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.jetbrains.annotations.NotNull;
 import org.queercraft.qctaxes.Utils.Bracket;
 import org.queercraft.qctaxes.commands.TaxCommand;
 
@@ -22,9 +21,6 @@ public final class QCTaxes extends JavaPlugin {
     // Vault
     private static Economy econ = null;
 
-    // Config
-    private FileConfiguration config;
-
     @Override
     public void onEnable() {
         Logger logger = getLogger();
@@ -34,8 +30,7 @@ public final class QCTaxes extends JavaPlugin {
         try {
             BukkitScheduler scheduler = Bukkit.getScheduler();
             saveDefaultConfig();
-            config = getConfig();
-
+            FileConfiguration config = getConfig();
             // vault setup
             if (!setupEconomy() ) {
                 logger.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -46,7 +41,7 @@ public final class QCTaxes extends JavaPlugin {
             // read brackets from config
             ConfigurationSection configBrackets = config.getConfigurationSection("brackets");
             List<Bracket> brackets = new ArrayList<>();
-            for (String rank : configBrackets.getKeys(true)) {
+            for (String rank : configBrackets.getKeys(false)) {
                 brackets.add(new Bracket(config.getDouble("brackets."+rank+".max"), config.getDouble("brackets."+rank+".percent")));
             }
 
@@ -79,9 +74,5 @@ public final class QCTaxes extends JavaPlugin {
 
     public static Economy getEconomy() {
         return econ;
-    }
-
-    public @NotNull FileConfiguration getConfig() {
-        return this.config;
     }
 }
